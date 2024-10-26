@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import unnamedImage from "../img/unnamed.png";
 
 const Header = ({ setSearchQuery }) => {
   const [searchValue, setSearchValue] = useState();
@@ -15,8 +16,9 @@ const Header = ({ setSearchQuery }) => {
         <div className="container">
           <div className="d-flex justify-content-between">
             <div>
-              <Link to="/" style={{ textDecoration: "none" }}>
-                <p className="fs-2 mt-2 text-danger fw-medium">MeetUp</p>
+              <Link to="/" >
+                {/* <p className="fs-2 mt-2 text-danger fw-medium">MeetUp</p> */}
+                <img src={unnamedImage} alt="Meet up logo" style={{ width: '7rem',marginTop: '10px'}}/>
               </Link>
             </div>
             <div

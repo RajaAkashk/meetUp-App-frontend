@@ -89,6 +89,7 @@ const EventDetailPage = () => {
                   </div>
                 </div>
 
+
                 <div className="col-md-4 py-2">
                   <div className="bg-white rounded p-3">
                     <div className="d-flex">
