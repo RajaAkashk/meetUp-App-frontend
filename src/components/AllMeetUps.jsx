@@ -59,7 +59,7 @@ const AllMeetUps = ({ searchQuery }) => {
   }, [searchQuery]);
 
   return (
-    <div className="bg-light">
+    <div className="bg-light vh-100">
       <div className="container">
         <hr className="m-0" />
         {/* for the heading and select event */}
@@ -108,9 +108,8 @@ const AllMeetUps = ({ searchQuery }) => {
               <h5 className="text-dark fs-3 mt-1">{eventInfo.title}</h5>
             </div>
           ))}
-
-          {loading && <p className="text-center fs-4 fw-medium">Loading...</p>}
         </div>
+        {loading && <p className="text-center pt-5 text-danger fs-4 fw-medium">Loading...</p>}
       </div>
     </div>
   );
