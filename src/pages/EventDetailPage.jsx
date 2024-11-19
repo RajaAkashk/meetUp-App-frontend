@@ -156,7 +156,7 @@ const EventDetailPage = () => {
               </div>
             </div>
           ) : (
-            loading && <p className="text-center fs-4 fw-medium">Loading...</p>
+            loading && <p className="text-center vh-100 text-danger py-5 fs-4 fw-medium">Loading...</p>
           )}
         </div>
       </div>

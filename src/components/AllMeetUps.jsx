@@ -4,65 +4,48 @@ import { Link } from "react-router-dom";
 
 const AllMeetUps = ({ searchQuery }) => {
   const [selectedEventType, setSelectedEventType] = useState("");
-  const [meetUpData, setMeetUpData] = useState(null);
-  const [searchMeetUpData, setSearchMeetUpData] = useState(null);
+  const [filteredData, setFilteredData] = useState([]);
 
   const { data, loading, error } = useFetch(
     "https://meet-up-app-backend-delta.vercel.app/"
   );
-
-  // select an event and fech data.
+console.log(data)
+  // Select an event type and filter data
   const handleSelectChange = (event) => {
     const { value } = event.target;
     setSelectedEventType(value);
+console.log("setSelectedEventType  :- ",value);
 
-    if (value === "Online" || value === "Offline") {
-      const fetchMeetUpData = async () => {
-        try {
-          const response = await fetch(
-            `https://meet-up-app-backend-delta.vercel.app/meetUp/events/${value}`
-          );
-          const result = await response.json();
-          setMeetUpData(result.EventData);
-          console.log("RESULT:", result.EventData);
-        } catch (error) {
-          console.log("error in fetching selected event data", error);
-        }
-      };
-      fetchMeetUpData();
+    if (value == "Online" || value == "Offline") {
+      const filtered = data?.filter((meetUp) => meetUp.typeOfEvent == value);
+      setFilteredData(filtered || []);
+    }
+     else if (value === "Both") {
+      setFilteredData(data); // Show all events
     } else {
-      setMeetUpData(null);
+      setFilteredData(null);
     }
   };
 
-  // Search and Fetch Data
+  // Search and filter data locally
   useEffect(() => {
-    if (searchQuery) {
-      console.log("searchQuery:-", searchQuery);
-      const searchedMeetUp = async () => {
-        try {
-          const response = await fetch(
-            `https://meet-up-app-backend-delta.vercel.app/meetUp/event/title/${searchQuery}`
-          );
-          const resultOfSearch = await response.json();
-          setSearchMeetUpData(resultOfSearch.filteredData);
-          console.log("resultOfSearch:- ", resultOfSearch.filteredData);
-        } catch (error) {
-          console.log("Error fromsearch and find event:", error);
-        }
-      };
-      searchedMeetUp();
-    } else {
-      setSearchMeetUpData(null);
-      console.log("searched data not found !!!");
+    if (searchQuery && data) {
+      const filtered = data.filter((meetUp) =>
+        meetUp.title.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      setFilteredData(filtered || []);
+    } else if (!searchQuery) {
+      setFilteredData(null);
     }
-  }, [searchQuery]);
+  }, [searchQuery, data]);
+
+  const displayedData = filteredData || data; // Prioritize filtered data
 
   return (
     <div className="bg-light vh-100">
       <div className="container">
         <hr className="m-0" />
-        {/* for the heading and select event */}
+        {/* Heading and Event Selection */}
         <div className="py-4 d-flex justify-content-between">
           <div className="col-md-5">
             <h1 className="display-5 fw-bold">MeetUp Events</h1>
@@ -81,10 +64,17 @@ const AllMeetUps = ({ searchQuery }) => {
           </div>
         </div>
 
+        {/* Meet-Up Events */}
         <div className="row">
-          {/* Check if searchMeetUpData, meetUpData, or data is available */}
-          {(searchMeetUpData || meetUpData || data)?.map((eventInfo) => (
-            <div className="col-md-4 mb-5" key={eventInfo._id}>
+          {loading && (
+            <p className="text-center pt-5 text-danger fs-4 fw-medium">
+              Loading...
+            </p>
+          )}
+
+          {displayedData?.length > 0 ? (
+            displayedData.map((eventInfo) => (
+              <div className="col-md-4 mb-5" key={eventInfo._id}>
               <Link to={`/events/${eventInfo._id}`} className="card col-md-10">
                 <img
                   src={eventInfo.eventPictures}
@@ -107,9 +97,21 @@ const AllMeetUps = ({ searchQuery }) => {
               </p>
               <h5 className="text-dark fs-3 mt-1">{eventInfo.title}</h5>
             </div>
-          ))}
+            ))
+          ) : (
+            !loading && (
+              <p className="text-center pt-5 text-muted fs-4">
+                No events found!
+              </p>
+            )
+          )}
         </div>
-        {loading && <p className="text-center pt-5 text-danger fs-4 fw-medium">Loading...</p>}
+
+        {error && (
+          <p className="text-center text-danger">
+            Error fetching data.
+          </p>
+        )}
       </div>
     </div>
   );
