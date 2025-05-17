@@ -89,7 +89,6 @@ const EventDetailPage = () => {
                   </div>
                 </div>
 
-
                 <div className="col-md-4 py-2">
                   <div className="bg-white rounded p-3">
                     <div className="d-flex">
@@ -117,13 +116,13 @@ const EventDetailPage = () => {
                   </div>
 
                   <div className="pt-5">
-                    <p className="fs-3 fw-bold">
+                    <p className="fs-3 fw-bold m-0">
                       Speakers: ({selectedEvent.speakers.length})
                     </p>
 
                     <div className="row">
                       {selectedEvent.speakers.map((speaker, index) => (
-                        <div className="col-md-6" key={index}>
+                        <div className="col-md-6 mt-3" key={index}>
                           <div className="card d-flex justify-content-center align-items-center p-2 pt-4 shadow-sm border-0">
                             <img
                               src={selectedEvent.speakersImage[index]}
@@ -156,7 +155,11 @@ const EventDetailPage = () => {
               </div>
             </div>
           ) : (
-            loading && <p className="text-center vh-100 text-danger py-5 fs-4 fw-medium">Loading...</p>
+            loading && (
+              <p className="text-center vh-100 text-danger py-5 fs-4 fw-medium">
+                Loading...
+              </p>
+            )
           )}
         </div>
       </div>

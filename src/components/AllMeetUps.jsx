@@ -9,18 +9,18 @@ const AllMeetUps = ({ searchQuery }) => {
   const { data, loading, error } = useFetch(
     "https://meet-up-app-backend-delta.vercel.app/"
   );
-console.log(data)
+
+  console.log(data);
   // Select an event type and filter data
   const handleSelectChange = (event) => {
     const { value } = event.target;
     setSelectedEventType(value);
-console.log("setSelectedEventType  :- ",value);
+    console.log("setSelectedEventType  :- ", value);
 
     if (value == "Online" || value == "Offline") {
       const filtered = data?.filter((meetUp) => meetUp.typeOfEvent == value);
       setFilteredData(filtered || []);
-    }
-     else if (value === "Both") {
+    } else if (value === "Both") {
       setFilteredData(data); // Show all events
     } else {
       setFilteredData(null);
@@ -42,13 +42,13 @@ console.log("setSelectedEventType  :- ",value);
   const displayedData = filteredData || data; // Prioritize filtered data
 
   return (
-    <div className="bg-light vh-100">
+    <div className="bg-light  min-vh-100">
       <div className="container">
         <hr className="m-0" />
         {/* Heading and Event Selection */}
         <div className="py-4 d-flex justify-content-between">
           <div className="col-md-5">
-            <h1 className="display-5 fw-bold">MeetUp Events</h1>
+            <h1 className=" fw-bold custom-heading">MeetUp Events</h1>
           </div>
           <div className="col-md-2">
             <select
@@ -72,45 +72,44 @@ console.log("setSelectedEventType  :- ",value);
             </p>
           )}
 
-          {displayedData?.length > 0 ? (
-            displayedData.map((eventInfo) => (
-              <div className="col-md-4 mb-5" key={eventInfo._id}>
-              <Link to={`/events/${eventInfo._id}`} className="card col-md-10">
-                <img
-                  src={eventInfo.eventPictures}
-                  className="card-img img-fluid"
-                  alt="Event Image"
-                  style={{
-                    height: "14em",
-                    objectFit: "cover",
-                    width: "100%",
-                  }}
-                />
-                <div className="card-img-overlay">
-                  <p className="bg-white py-2 p-1 rounded col-md-3 text-center">
-                    {eventInfo.typeOfEvent}
+          {displayedData?.length > 0
+            ? displayedData.map((eventInfo) => (
+                <div className="col-md-4 mb-5" key={eventInfo._id}>
+                  <Link to={`/events/${eventInfo._id}`} className="card">
+                    <img
+                      src={eventInfo.eventPictures}
+                      className="card-img img-fluid"
+                      alt="Event Image"
+                      style={{
+                        height: "14em",
+                        objectFit: "cover",
+                        width: "100%",
+                      }}
+                    />
+                    <div className="card-img-overlay">
+                      <p
+                        className="bg-white py-2 p-1 rounded col-md-3 text-center"
+                        style={{ width: "fit-content" }}
+                      >
+                        {eventInfo.typeOfEvent}
+                      </p>
+                    </div>
+                  </Link>
+                  <p className="m-0 p-0 text-secondary">
+                    {eventInfo.data} - {eventInfo.timing}
                   </p>
+                  <h5 className="text-dark fs-3 mt-1">{eventInfo.title}</h5>
                 </div>
-              </Link>
-              <p className="m-0 p-0 text-secondary">
-                {eventInfo.data} - {eventInfo.timing}
-              </p>
-              <h5 className="text-dark fs-3 mt-1">{eventInfo.title}</h5>
-            </div>
-            ))
-          ) : (
-            !loading && (
-              <p className="text-center pt-5 text-muted fs-4">
-                No events found!
-              </p>
-            )
-          )}
+              ))
+            : !loading && (
+                <p className="text-center pt-5 text-muted fs-4">
+                  No events found!
+                </p>
+              )}
         </div>
 
         {error && (
-          <p className="text-center text-danger">
-            Error fetching data.
-          </p>
+          <p className="text-center text-danger">Error fetching data.</p>
         )}
       </div>
     </div>

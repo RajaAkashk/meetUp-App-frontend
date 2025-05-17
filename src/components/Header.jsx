@@ -16,13 +16,16 @@ const Header = ({ setSearchQuery }) => {
         <div className="container">
           <div className="d-flex justify-content-between">
             <div>
-              <Link to="/" >
-                {/* <p className="fs-2 mt-2 text-danger fw-medium">MeetUp</p> */}
-                <img src={unnamedImage} alt="Meet up logo" style={{ width: '7rem',marginTop: '10px'}}/>
+              <Link to="/">
+                <img
+                  src={unnamedImage}
+                  alt="Meet up logo"
+                  style={{ width: "7rem", marginTop: "10px" }}
+                />
               </Link>
             </div>
             <div
-              className="bg-white mt-3 d-flex rounded px-2 py-0"
+              className="bg-white mt-2 d-flex rounded px-2 py-0 custom-search-bar"
               style={{ height: "40px" }}
             >
               <i class="bi bi-search mt-1 fs-5"></i>
